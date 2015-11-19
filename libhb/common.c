@@ -23,6 +23,10 @@
 #include "qsv_common.h"
 #endif
 
+#ifdef USE_AVTB
+#include "platform/macosx/avtb_common.h"
+#endif
+
 #ifdef USE_X265
 #include "x265.h"
 #endif
@@ -224,18 +228,19 @@ hb_encoder_internal_t hb_video_encoders[]  =
     { { "MPEG-2 (FFmpeg)",     "ffmpeg2",    NULL,                      HB_VCODEC_FFMPEG_MPEG2, HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 0, HB_GID_VCODEC_MPEG2,  },
     { { "VP3 (Theora)",        "libtheora",  NULL,                      HB_VCODEC_THEORA,                       HB_MUX_MASK_MKV, }, NULL, 0, HB_GID_VCODEC_THEORA, },
     // actual encoders
-    { { "H.264 (x264)",        "x264",       "H.264 (libx264)",         HB_VCODEC_X264_8BIT,         HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_H264,   },
-    { { "H.264 10-bit (x264)", "x264_10bit", "H.264 10-bit (libx264)",  HB_VCODEC_X264_10BIT,   HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_H264,   },
-    { { "H.264 (Intel QSV)",   "qsv_h264",   "H.264 (Intel Media SDK)", HB_VCODEC_QSV_H264,     HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_H264,   },
-    { { "H.265 (x265)",        "x265",       "H.265 (libx265)",         HB_VCODEC_X265_8BIT,      HB_MUX_AV_MP4|HB_MUX_AV_MKV,   }, NULL, 1, HB_GID_VCODEC_H265,   },
-    { { "H.265 10-bit (x265)", "x265_10bit", "H.265 10-bit (libx265)",  HB_VCODEC_X265_10BIT,     HB_MUX_AV_MP4|HB_MUX_AV_MKV,   }, NULL, 1, HB_GID_VCODEC_H265,   },
-    { { "H.265 12-bit (x265)", "x265_12bit", "H.265 12-bit (libx265)",  HB_VCODEC_X265_12BIT,     HB_MUX_AV_MP4|HB_MUX_AV_MKV,   }, NULL, 1, HB_GID_VCODEC_H265,   },
-    { { "H.265 16-bit (x265)", "x265_16bit", "H.265 16-bit (libx265)",  HB_VCODEC_X265_16BIT,     HB_MUX_AV_MP4|HB_MUX_AV_MKV,   }, NULL, 1, HB_GID_VCODEC_H265,   },
-    { { "H.265 (Intel QSV)",   "qsv_h265",   "H.265 (Intel Media SDK)", HB_VCODEC_QSV_H265,     HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_H265,   },
-    { { "MPEG-4",              "mpeg4",      "MPEG-4 (libavcodec)",     HB_VCODEC_FFMPEG_MPEG4, HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_MPEG4,  },
-    { { "MPEG-2",              "mpeg2",      "MPEG-2 (libavcodec)",     HB_VCODEC_FFMPEG_MPEG2, HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_MPEG2,  },
-    { { "VP8",                 "VP8",        "VP8 (libvpx)",            HB_VCODEC_FFMPEG_VP8,                   HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_VP8,    },
-    { { "Theora",              "theora",     "Theora (libtheora)",      HB_VCODEC_THEORA,                       HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_THEORA, },
+    { { "H.264 (x264)",        "x264",       "H.264 (libx264)",             HB_VCODEC_X264_8BIT,    HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_H264,   },
+    { { "H.264 10-bit (x264)", "x264_10bit", "H.264 10-bit (libx264)",      HB_VCODEC_X264_10BIT,   HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_H264,   },
+    { { "H.264 (Intel QSV)",   "qsv_h264",   "H.264 (Intel Media SDK)",     HB_VCODEC_QSV_H264,     HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_H264,   },
+    { { "H.264 (CoreVideo)",   "vtb_h264",   "H.264 (Apple VideoToolBox)"}, HB_VCODEC_AVTB_H264,    HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_H264,   },
+    { { "H.265 (x265)",        "x265",       "H.265 (libx265)",             HB_VCODEC_X265_8BIT,      HB_MUX_AV_MP4|HB_MUX_AV_MKV,   }, NULL, 1, HB_GID_VCODEC_H265,   },
+    { { "H.265 10-bit (x265)", "x265_10bit", "H.265 10-bit (libx265)",      HB_VCODEC_X265_10BIT,     HB_MUX_AV_MP4|HB_MUX_AV_MKV,   }, NULL, 1, HB_GID_VCODEC_H265,   },
+    { { "H.265 12-bit (x265)", "x265_12bit", "H.265 12-bit (libx265)",      HB_VCODEC_X265_12BIT,     HB_MUX_AV_MP4|HB_MUX_AV_MKV,   }, NULL, 1, HB_GID_VCODEC_H265,   },
+    { { "H.265 16-bit (x265)", "x265_16bit", "H.265 16-bit (libx265)",      HB_VCODEC_X265_16BIT,     HB_MUX_AV_MP4|HB_MUX_AV_MKV,   }, NULL, 1, HB_GID_VCODEC_H265,   },
+    { { "H.265 (Intel QSV)",   "qsv_h265",   "H.265 (Intel Media SDK)",     HB_VCODEC_QSV_H265,     HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_H265,   },
+    { { "MPEG-4",              "mpeg4",      "MPEG-4 (libavcodec)",         HB_VCODEC_FFMPEG_MPEG4, HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_MPEG4,  },
+    { { "MPEG-2",              "mpeg2",      "MPEG-2 (libavcodec)",         HB_VCODEC_FFMPEG_MPEG2, HB_MUX_MASK_MP4|HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_MPEG2,  },
+    { { "VP8",                 "VP8",        "VP8 (libvpx)",                HB_VCODEC_FFMPEG_VP8,                   HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_VP8,    },
+    { { "Theora",              "theora",     "Theora (libtheora)",          HB_VCODEC_THEORA,                       HB_MUX_MASK_MKV, }, NULL, 1, HB_GID_VCODEC_THEORA, },
 };
 int hb_video_encoders_count = sizeof(hb_video_encoders) / sizeof(hb_video_encoders[0]);
 static int hb_video_encoder_is_enabled(int encoder)
@@ -246,6 +251,14 @@ static int hb_video_encoder_is_enabled(int encoder)
         return hb_qsv_video_encoder_is_enabled(encoder);
     }
 #endif
+
+#ifdef USE_AVTB
+    if (encoder & HB_VCODEC_AVTB_MASK)
+    {
+        return hb_avtb_video_encoder_is_enabled(encoder);
+    }
+#endif
+
     switch (encoder)
     {
         // the following encoders are always enabled
@@ -1209,6 +1222,11 @@ void hb_video_quality_get_limits(uint32_t codec, float *low, float *high,
     }
 #endif
 
+#ifdef USE_AVTB
+return hb_avtb_video_quality_get_limits(codec, low, high, granularity,
+                                       direction);
+#endif
+
     switch (codec)
     {
         case HB_VCODEC_X264_8BIT:
@@ -1259,6 +1277,13 @@ const char* hb_video_quality_get_name(uint32_t codec)
     }
 #endif
 
+#ifdef USE_AVTB
+    if (codec & HB_VCODEC_AVTB_MASK)
+    {
+        return hb_avtb_video_quality_get_name(codec);
+    }
+#endif
+
     switch (codec)
     {
         case HB_VCODEC_X264_8BIT:
@@ -1301,6 +1326,13 @@ const char* const* hb_video_encoder_get_presets(int encoder)
     if (encoder & HB_VCODEC_QSV_MASK)
     {
         return hb_qsv_preset_get_names();
+    }
+#endif
+
+#ifdef USE_AVTB
+    if (encoder & HB_VCODEC_AVTB_MASK)
+    {
+        return hb_avtb_preset_get_names();
     }
 #endif
 
@@ -1348,6 +1380,13 @@ const char* const* hb_video_encoder_get_profiles(int encoder)
     if (encoder & HB_VCODEC_QSV_MASK)
     {
         return hb_qsv_profile_get_names(encoder);
+    }
+#endif
+
+#ifdef USE_AVTB
+    if (encoder & HB_VCODEC_AVTB_MASK)
+    {
+        return hb_avtb_profile_get_names(encoder);
     }
 #endif
 
